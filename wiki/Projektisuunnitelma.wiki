@@ -1,13 +1,17 @@
 #summary Projektisuunnitelma
 
-= Introduction =
+= Tietorakenteet =
 
-Add your content here.
+* Hajautustaulu (Pointereita työntekijöihin)
+* Työntekijä (Nimi(avain), palkka, aloitusvuosi, pointeri seuraavaan työntekijään)
+
+= Moduulit =
+
+* Main-moduuli
+* Tietorakenne-moduuli (hajautustaulu yms.)
+* Testimoduuli
 
 
-= Details =
+= Muuta =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+* Käytetään jakojäännösmenetelmää hajautusfunktiona
