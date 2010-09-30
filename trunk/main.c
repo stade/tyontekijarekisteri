@@ -15,8 +15,8 @@
 
  // TODO charit dynaamisiksi.
 struct tyontekija {
-     char* etunimi[20];
-     char* sukunimi[30];
+     char *etunimi;
+     char *sukunimi;
      int palkka;
      int aloitusvuosi;
      // TODO struct tyontekija seuraava;
@@ -58,11 +58,11 @@ int main(int argc, char** argv) {
 int lueTiedostosta() {
 
     FILE *tiedosto;
-    char *etun;
-    char *sukun;
-    int p;
-    int aloitusv;
-
+    char etun[20];
+    char sukun[30];
+    int p=0;
+    int aloitusv=0;
+    struct tyontekija temp;
 
     if ((tiedosto = fopen("/fs-3/0/tatutahv/Oma/c-ohjelmointi/ht/testi", "r" )) == NULL){
         fprintf(stderr, "Tiedoston avaaminen epäonnistu\n");
@@ -77,26 +77,26 @@ int lueTiedostosta() {
 
     printf("JEE\n");
 
-    while (feof(tiedosto) != 0) {
+    while (feof(tiedosto) == 0) {
 
-        printf("jee1");
+        //printf("jee1\n");
 
-        if (fscanf(tiedosto, "%*s %*s %d %d", &p, &aloitusv) != 4){
-            fprintf(stderr, "Tiedostosta lukeminen epäonnistui\n");
-            return (EXIT_FAILURE);
-        }
-        struct tyontekija temp;
-        //temp.etunimi = *etun;
-        //temp.sukunimi = sukun;
+
+
+        fscanf(tiedosto, "%s %s %d%d\n", etun, sukun, &p, &aloitusv);
+        printf("%s %s\n", etun, sukun);
+            //fprintf(stderr, "tiedosto kusee\n");
+        temp.etunimi = *etun;
+        temp.sukunimi = *sukun;
         temp.palkka = p;
         temp.aloitusvuosi = aloitusv;
         //LASKE HAJAUTUSFUNKTIOLLA JA SIJOITA HAJAUTUSTAULUUN
         //ETTEI KADOTETA TÄTÄ TYÖNTEKIJÄÄ -> hajauta(sukun);
         //#ifdef DEB
 
-        printf("etunimi: %s sukunimi: %s palkka %d aloitusv: %d", temp.etunimi, temp.sukunimi, temp.palkka, temp.palkka);
+        printf("etunimi: %s sukunimi: %s palkka %d aloitusv: %d\n", &temp.etunimi, &temp.sukunimi, temp.palkka, temp.aloitusvuosi);
 
-        printf("jee2\n");
+        //printf("jee2\n");
         //#endif
     }
 
