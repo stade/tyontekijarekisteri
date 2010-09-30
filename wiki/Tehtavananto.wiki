@@ -20,8 +20,13 @@ Käytä ratkaisussasi hajautustaulua työntekijän nimen mukaan.
 == Toteutettu ==
 
 * 1. Kesken.
+
 * 2. Kesken.
+
 * 3. Kesken.
+
 * 4. Kesken.
+
 * 5. Kesken.
+
 * 6. Kesken.
