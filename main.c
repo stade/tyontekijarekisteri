@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   main.c
  * Author: Tatu Tahvanainen, Jarkko Nyman, Aleksi Aalto
  *
@@ -9,14 +9,14 @@
 #include <stdlib.h>
 
 /*
- * 
+ *
  */
 
 
  // TODO charit dynaamisiksi.
 struct tyontekija {
-     char *etunimi;
-     char *sukunimi;
+     char etunimi[20];
+     char sukunimi[30];
      int palkka;
      int aloitusvuosi;
      // TODO struct tyontekija seuraava;
@@ -26,78 +26,38 @@ struct tyontekija {
 int lueTiedostosta();
 int main(int argc, char** argv) {
 
-   
-
-
-    /* TODO
-    struct taulu {
-
-       struct tyontekijat;
-
-
-    };
-
-
-
-    struct hajautus {
-
-        int koko;
-        struct taulu;
-
-
-
-    };
-
-    */
 
     lueTiedostosta();
-
     return (EXIT_SUCCESS);
 }
 
 int lueTiedostosta() {
 
     FILE *tiedosto;
-    char etun[20];
-    char sukun[30];
-    int p=0;
-    int aloitusv=0;
-    struct tyontekija temp;
-
-    if ((tiedosto = fopen("/fs-3/0/tatutahv/Oma/c-ohjelmointi/ht/testi", "r" )) == NULL){
+    struct tyontekija taulu[20]; //taulukollinen työntekijöitä, jotta meillä pointterit niihin (ennen hajautustaulun implementaatiota)
+    int j=0; //apumuuttuja taulun läpikäyntiin
+    if ((tiedosto = fopen("/fs-0/0/amjaalto/c-kurssi/testi", "r" )) == NULL){ //TODO muuta fiksummaksi, nyt muuttuu käyttäjän mukaan
         fprintf(stderr, "Tiedoston avaaminen epäonnistu\n");
         return (EXIT_FAILURE);
     }
 
-    if (tiedosto != NULL) {
-
-       printf(":E\n");
-
-    }
-
-    printf("JEE\n");
 
     while (feof(tiedosto) == 0) {
 
-        //printf("jee1\n");
+        struct tyontekija temp;
+        fscanf(tiedosto, "%20s %30s %d%d\n", temp.etunimi, temp.sukunimi, &temp.palkka, &temp.aloitusvuosi);
+        taulu[j]=temp; //asetetaan tämä nimenomainen työntekijä sen omaan lokeroon (j) tauluun
 
-
-
-        fscanf(tiedosto, "%s %s %d%d\n", etun, sukun, &p, &aloitusv);
-        printf("%s %s\n", etun, sukun);
             //fprintf(stderr, "tiedosto kusee\n");
-        temp.etunimi = *etun;
-        temp.sukunimi = *sukun;
-        temp.palkka = p;
-        temp.aloitusvuosi = aloitusv;
-        //LASKE HAJAUTUSFUNKTIOLLA JA SIJOITA HAJAUTUSTAULUUN
-        //ETTEI KADOTETA TÄTÄ TYÖNTEKIJÄÄ -> hajauta(sukun);
-        //#ifdef DEB
 
-        printf("etunimi: %s sukunimi: %s palkka %d aloitusv: %d\n", &temp.etunimi, &temp.sukunimi, temp.palkka, temp.aloitusvuosi);
+        //LASKE HAJAUTUSFUNKTIOLLA JA SIJOITA HAJAUTUSTAULUUN (tämänhetkisen taulun sijaan)
+        //ETTEI KADOTETA TÄTÄ TYÖNTEKIJÄÄ -> hajauta(temp.sukunimi);
 
-        //printf("jee2\n");
-        //#endif
+
+        printf("etunimi: %s sukunimi: %s palkka %d aloitusv: %d\n", temp.etunimi, temp.sukunimi, temp.palkka, temp.aloitusvuosi);
+
+        printf("taulukon lokerossa %d on työntekijä: %s %s %d %d\n", j, taulu[j].etunimi, taulu[j].sukunimi, taulu[j].palkka, taulu[j].aloitusvuosi); //testataan toimiiko taulu
+        j++;
     }
 
     if(fclose(tiedosto) == EOF) {
