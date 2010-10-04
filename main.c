@@ -36,7 +36,19 @@ int lueTiedostosta() {
     FILE *tiedosto;
     struct tyontekija taulu[20]; //taulukollinen työntekijöitä, jotta meillä pointterit niihin (ennen hajautustaulun implementaatiota)
     int j=0; //apumuuttuja taulun läpikäyntiin
-    if ((tiedosto = fopen("/fs-0/0/amjaalto/c-kurssi/testi", "r" )) == NULL){ //TODO muuta fiksummaksi, nyt muuttuu käyttäjän mukaan
+    char tiedostonimi[100];
+
+    printf("Anna luettavan tiedoston nimi\n");
+
+
+    // Luetaan tiedostonimi käyttäjän syötteestä raijoitetaan luettavien
+    // merkkien määrä, jottei tule muistinylivuotoa.
+    if (scanf("%99s", tiedostonimi) != 1) {
+       fprintf(stderr, "Tiedostonimen lukeminen käyttäjältä epäonnistui!\n");
+       return (EXIT_FAILURE);
+    }
+
+    if ((tiedosto = fopen(tiedostonimi, "r" )) == NULL){ //TODO muuta fiksummaksi, nyt muuttuu käyttäjän mukaan
         fprintf(stderr, "Tiedoston avaaminen epäonnistu\n");
         return (EXIT_FAILURE);
     }
