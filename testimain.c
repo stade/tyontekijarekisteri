@@ -10,10 +10,6 @@
 #include <string.h>
 #include "linkitettylista.h"
 
-/*
- * 
- */
-
 
 int main(void) {
 
@@ -104,7 +100,7 @@ int main(void) {
 
      if  (poistaListasta(l, "jeesus", "poski") == 0) {
 
-        printf("poisto kusi");
+        printf("käyttäjän poisto ei onnistunut\n");
 
 
      }
