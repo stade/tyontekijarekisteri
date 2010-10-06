@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
 typedef struct tyontekija {
      char etunimi[20];
      char sukunimi[30];
@@ -96,6 +94,14 @@ tyontekija* etsiListasta(lista *l, char* etun, char* sukun) {
     }
     return NULL;
 }
+
+void vapautaSolmunVaraamaMuisti(solmu *s) {
+    free(s->duunari);
+    free(s);
+    s=NULL;
+}
+
+
 int poistaListasta(lista *l, char* etun, char* sukun) { //return 0 if fail
     if (l == NULL) {
         return 0;
@@ -109,16 +115,11 @@ int poistaListasta(lista *l, char* etun, char* sukun) { //return 0 if fail
                 poistettava = seuraava->seur;
                 seuraava->seur=poistettava->seur;
                 poistettava->seur=NULL;
-                //vapautaSolmunVaraamaMuisti(poistettava);
+                vapautaSolmunVaraamaMuisti(poistettava);
                 return 1;
         } else seuraava = seuraava->seur;
     }
     return 0;
 
 
-}
-void vapautaSolmunVaraamaMuisti(solmu* s) {
-
-    free(s);
-    s=NULL;
 }
