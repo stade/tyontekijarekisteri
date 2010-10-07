@@ -35,7 +35,6 @@ typedef struct lista {
 typedef struct solmu {
     struct tyontekija *duunari;
     struct solmu *seur;
-    struct solmu *edell;
 } solmu;
 
 
