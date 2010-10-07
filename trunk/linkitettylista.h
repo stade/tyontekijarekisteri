@@ -2,11 +2,11 @@
  * linkitettylista.h
  */
 
+
 /*
  * tyontekija-tietueen sisäinen rakenne
  * 
  */
-
 typedef struct tyontekija {
     char etunimi[20];
     char sukunimi[30];
@@ -16,27 +16,28 @@ typedef struct tyontekija {
 
 } tyontekija;
 
+
 /*
  * Lista-tietue, joka pitää kirjaa linkitettyinä listoina toimivista solmuista.
  * Toiminnaltaan siis "ankkuri" jolla päästään kiinni linkitettyjen solmujen
  * ensimmäiseen solmuun.
  */
-
 typedef struct lista {
     struct solmu *paa;
 
 } lista;
 
+
 /*
  * Solmu-tietue sisältää pointterin oleellisimpaan tietueeseen eli duunari-
  * tietueeseen, sekä pointterit edelliseen ja seuraavaan solmu-tietueeseen.
  */
-
 typedef struct solmu {
     struct tyontekija *duunari;
     struct solmu *seur;
     struct solmu *edell;
 } solmu;
+
 
 /*
  *luoLista-funktio luo uuden lista-tietueen ja varaa sille tilan mallocilla.
@@ -44,6 +45,7 @@ typedef struct solmu {
  *
  */
 lista* luoLista();
+
 
 /*
  *luoSolmu-funktio luo uuden solmu-tietueen ja varaa sille tilan mallocilla.
@@ -54,6 +56,7 @@ lista* luoLista();
  *
  */
 solmu* luoSolmu(struct tyontekija *t);
+
 
 /*
  * Parametrina saaduun listapointterin perusteella lisätään jo luotuun lista-
@@ -68,6 +71,7 @@ solmu* luoSolmu(struct tyontekija *t);
  */
 int lisaaListaanLoppuun(lista *listap, struct tyontekija *duunaaja);
 
+
 /*
  * Funktio tutkii parametrina annetun listan kaikki solmut läpi. Lopettaa kesken
  * ja palauttaa löydetyn työntekijän* jos se löytyy. Listan ollessa tyhjä tai
@@ -75,8 +79,8 @@ int lisaaListaanLoppuun(lista *listap, struct tyontekija *duunaaja);
  * löytyy, niin
  *
  */
-
 tyontekija* etsiListasta(lista *l, char* etun, char* sukun);
+
 
 /*
  * poistaListasta-funktio tutkii ensiksi onko parametrina annettuna lista tyhjä
@@ -89,11 +93,10 @@ tyontekija* etsiListasta(lista *l, char* etun, char* sukun);
  * Onnistuneen poiston jäljiltä palautetaan onnistumisen merkiksi 1. Poiston epäonnistuminen
  * palauttaa 0.
  */
-
 int poistaListasta(lista *l, char* etun, char* sukun);
+
 
 /*
  * Vapauttaa parametrina saamansa solmu-tietueen tilan.
  */
-
 void vapautaSolmunVaraamaMuisti(solmu*);
