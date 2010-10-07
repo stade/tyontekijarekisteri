@@ -13,43 +13,56 @@
 
 int main(void) {
 
+
     lista* l;
     solmu* s;
     int i;
     struct tyontekija* t;
-    t=malloc(sizeof(struct tyontekija));
     struct tyontekija* k;
     struct tyontekija* y;
+
+    //Luodaan työntekijät testaamista varten.
+    t=malloc(sizeof(struct tyontekija));
     k=malloc(sizeof(struct tyontekija));
-    char taulu[20]="matti";
-    char tauluk[30]="kemppainen";
-    strcpy(t->etunimi, taulu);
-    strcpy(t->sukunimi, tauluk);
-    t->aloitusvuosi = 2008;
-    t->palkka = 1000;
-
-    char taulua[20]="tissi";
-    char taulub[30]="poski";
-    strcpy(k->etunimi, taulua);
-    strcpy(k->sukunimi, taulub);
-    k->aloitusvuosi = 2009;
-    k->palkka = 1050;
-
     y=malloc(sizeof(struct tyontekija));
-    char taulug[20]="jeesus";
-    char tauluh[30]="poski";
-    strcpy(y->etunimi, taulug);
-    strcpy(y->sukunimi, tauluh);
-    y->aloitusvuosi = 2009;
-    y->palkka = 1050;
+
+
+    //Annetaan työntekijöille tiedot.
+    char taula[20]="Matti";
+    char taulub[30]="Kemppainen";
+    strcpy(t->etunimi, taula);
+    strcpy(t->sukunimi, taulub);
+    t->aloitusvuosi = 2008;
+    t->palkka = 1500;
+
+    char tauluc[20]="Mikko";
+    char taulud[30]="Alatalo";
+    strcpy(k->etunimi, tauluc);
+    strcpy(k->sukunimi, taulud);
+    k->aloitusvuosi = 2009;
+    k->palkka = 2000;
+
     
+    char taulue[20]="Paavo";
+    char tauluf[30]="Väyrynen";
+    strcpy(y->etunimi, taulue);
+    strcpy(y->sukunimi, tauluf);
+    y->aloitusvuosi = 2010;
+    y->palkka = 3000;
+
+
+    // Luodaan lista. Ohjelman suoritus loppuu, jos listan luominen ei
+    // onnistunut.
      if ((l = luoLista()) == NULL) {
          
-         printf("Ei näin\n");
+         printf("Listan luominen epäonnistui.\n");
          return (EXIT_FAILURE);
          
      }
-     printf("näin\n");
+     else {
+          printf("Listan luonti onnistui\n");
+     }
+    
      
      /*if ((s = luoSolmu(t)) == NULL) {
          
@@ -58,61 +71,62 @@ int main(void) {
          
          
      }*/
-     printf("näin2\n");
+    
+     // Lisätään listaan työtekijät. Ilmoitetaan jos ei onnistunu.
 
      if ((i = lisaaListaanLoppuun(l,t)) == 0) {
 
-         printf("Ei näin3 \n");
-
-
-
-
-
+         printf("1. listaan lisääminen epäonnistui\n");
      }
 
-     printf("1. %d\n" , i);
+     //printf("1. %d\n" , i);
 
      if ((i = lisaaListaanLoppuun(l,k)) == 0) {
 
-         printf("Ei näin4 \n");
-
-
-
-
-
+         printf("2. listaan lisääminen epäonnistui\n");
      }
-
-     printf("2. %d\n" , i);
+     //printf("2. %d\n" , i);
 
      if ((i = lisaaListaanLoppuun(l,y)) == 0) {
-         printf("fail");
+         printf("3. listaan lisääminen epäonnistui");
      }
-     printf("kolmas työntekijä:  %d\n", i);
 
-     printf("tyontetekijäkusee\n");
+
+     //printf("kolmas työntekijä:  %d\n", i);
+
+     // Luodaan työntekijä etsinnän testaamista varten.
      struct tyontekija* testityontekija = malloc(sizeof(struct tyontekija));
-     printf("ennen etsintää\n");
-     testityontekija = etsiListasta(l, "matti", "kemppainen");
-     printf("etsinnän jälkeen\n");
-     if (testityontekija == NULL)
-         printf("VITTUSAATANA\n");
+     //printf("ennen etsintää\n");
+     testityontekija = etsiListasta(l, "Matti", "Kemppainen");
+     //printf("etsinnän jälkeen\n");
+     
+     if (testityontekija == NULL)  {
+         printf("etsintä epäonnistui\n");
+     }
+
+     //Tulostetaan etsityn työntekijän tiedot.
      printf("NIMI: %s SUKUNIMI: %s\n", testityontekija->etunimi, testityontekija->sukunimi);
 
-     if  (poistaListasta(l, "jeesus", "poski") == 0) {
+
+     //Poistetaan listasta työntekijä.
+     if  (poistaListasta(l, "Paavo", "Väyrynen") == 0) {
 
         printf("käyttäjän poisto ei onnistunut\n");
 
 
      }
 
-      if ((testityontekija = etsiListasta(l, "jeesus", "poski")) == 0) {
+     if ((testityontekija = etsiListasta(l, "Paavo", "Väyrynen")) == 0) {
 
           printf("Poisto onnistui\n");
 
-      }
+     }
 
+     // Vapautetaan käytetty muisti.
      free(t);
      free(k);
+     free(y);
+     free(testityontekija);
      free(l);
 
     return (EXIT_SUCCESS);
