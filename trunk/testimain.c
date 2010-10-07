@@ -106,8 +106,10 @@ int main(void) {
 
      //Tulostetaan etsityn työntekijän tiedot.
      printf("NIMI: %s SUKUNIMI: %s\n", testityontekija->etunimi, testityontekija->sukunimi);
-
-
+     testityontekija = etsiListasta(l, "Mikko", "Alatalo");
+     printf("NIMI: %s SUKUNIMI: %s\n", testityontekija->etunimi, testityontekija->sukunimi);
+     testityontekija = etsiListasta(l, "Paavo", "Väyrynen");
+     printf("NIMI: %s SUKUNIMI: %s\n", testityontekija->etunimi, testityontekija->sukunimi);
      //Poistetaan listasta 1. työntekijä.
      if  (poistaListasta(l, "Paavo", "Väyrynen") == 0) {
 
@@ -122,13 +124,13 @@ int main(void) {
 
      }
        //Poistetaan listasta 2. työntekijä.
-     if  (poistaListasta(l, "Matti ", "Kemppainen") == 0) {
+     if (poistaListasta(l, "Matti", "Kemppainen") == 0) {
 
         printf("2. käyttäjän poisto ei onnistunut\n");
 
 
      }
-
+     printf("tarkistetaan 2. poisto");
      if ((testityontekija = etsiListasta(l, "Matti", "Kemppainen")) == 0) {
 
           printf("2. poisto onnistui\n");
@@ -142,7 +144,7 @@ int main(void) {
 
 
      }
-
+     printf("3. poiston tarkistus: \n");
      if ((testityontekija = etsiListasta(l, "Mikko", "Alatalo")) == 0) {
 
           printf("3. poisto onnistui\n");
@@ -152,6 +154,9 @@ int main(void) {
 
 
      // Vapautetaan käytetty muisti.
+     free(t);
+     free(k);
+     free(y);
      free(testityontekija);
      free(l);
 
