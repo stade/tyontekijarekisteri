@@ -108,24 +108,50 @@ int main(void) {
      printf("NIMI: %s SUKUNIMI: %s\n", testityontekija->etunimi, testityontekija->sukunimi);
 
 
-     //Poistetaan listasta työntekijä.
+     //Poistetaan listasta 1. työntekijä.
      if  (poistaListasta(l, "Paavo", "Väyrynen") == 0) {
 
-        printf("käyttäjän poisto ei onnistunut\n");
+        printf("1. käyttäjän poisto ei onnistunut\n");
 
 
      }
 
      if ((testityontekija = etsiListasta(l, "Paavo", "Väyrynen")) == 0) {
 
-          printf("Poisto onnistui\n");
+          printf("1. poisto onnistui\n");
+
+     }
+       //Poistetaan listasta 2. työntekijä.
+     if  (poistaListasta(l, "Matti ", "Kemppainen") == 0) {
+
+        printf("2. käyttäjän poisto ei onnistunut\n");
+
 
      }
 
+     if ((testityontekija = etsiListasta(l, "Matti", "Kemppainen")) == 0) {
+
+          printf("2. poisto onnistui\n");
+
+     }
+     /*
+       //Poistetaan listasta 3. työntekijä.
+     if  (poistaListasta(l, "Mikko", "Alatalo") == 0) {
+
+        printf("3. käyttäjän poisto ei onnistunut\n");
+
+
+     }
+
+     if ((testityontekija = etsiListasta(l, "Mikko", "Alatalo")) == 0) {
+
+          printf("3. poisto onnistui\n");
+
+     }
+     */
+
+
      // Vapautetaan käytetty muisti.
-     free(t);
-     free(k);
-     free(y);
      free(testityontekija);
      free(l);
 
