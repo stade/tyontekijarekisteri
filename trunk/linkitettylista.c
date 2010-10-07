@@ -7,7 +7,7 @@ typedef struct tyontekija {
      char sukunimi[30];
      int palkka;
      int aloitusvuosi;
-     // TODO struct tyontekija seuraava;
+     
 
 }tyontekija;
 
@@ -19,6 +19,7 @@ typedef struct solmu{
     struct tyontekija *duunari;
     struct solmu *seur;
 }solmu;
+
 lista* luoLista() {
      lista *p;
      p = ((lista *)malloc(sizeof(lista)));
@@ -46,7 +47,8 @@ solmu* luoSolmu(struct tyontekija *t) {
 
 
 }
-int lisaaListaanLoppuun(lista *listap, struct tyontekija *duunaaja) { //TODO työntekijöiden nimien vertaus
+//TODO työntekijöiden nimien vertaus
+int lisaaListaanLoppuun(lista *listap, struct tyontekija *duunaaja) { 
     struct solmu* uusi = luoSolmu(duunaaja);
     struct solmu *seuraava;
 
@@ -73,32 +75,28 @@ tyontekija* etsiListasta(lista *l, char* etun, char* sukun) {
         return NULL;
     }
     char *tempetu, *tempsuku;
-
-    //printf("seuraavan alustus\n");
     struct solmu* seuraava = l->paa;
     while (seuraava != NULL) {
-        //printf("etsinnän whilessa\n");
         tempetu = seuraava->duunari->etunimi;
         tempsuku = seuraava->duunari->sukunimi;
-        //printf("Etsinnässä edetään, nyt menossa: %s\n", tempetu);
         if (strcmp(tempetu, etun) == 0 &&
             strcmp(tempsuku, sukun) == 0) {
 
+            printf("Etsitty on löytynyt\n");
 
-            //printf("ETSITTY HOMO ON LÖYTYNYT\n");
             return seuraava->duunari;
         } else seuraava = seuraava->seur;
     }
     return NULL;
 }
 
-void vapautaSolmunVaraamaMuisti(solmu *s) { //toimivuus ei taattu
+void vapautaSolmunVaraamaMuisti(solmu *s) { 
 
     free(s->duunari);
     free(s);
-    //printf("muisti vapautettu\n");
     s=NULL;
 }
+
 
 
 int poistaListasta(lista *l, char* etun, char* sukun) { //return 0 if fail
@@ -107,10 +105,8 @@ int poistaListasta(lista *l, char* etun, char* sukun) { //return 0 if fail
     }
     solmu* nykyinen = l->paa;
     solmu* edellinen = l->paa;
-    //printf("etsitty on %s %s ja paassa on %s %s\n", etun, sukun, nykyinen->duunari->etunimi, nykyinen->duunari->sukunimi);
     if (strcmp(nykyinen->duunari->etunimi, etun) == 0 && //jos poistettava oli ensimmäinen solmu
             strcmp(nykyinen->duunari->sukunimi, sukun) == 0) {
-        //printf("iffissä ennen sijoitusta\n");
         l->paa = nykyinen->seur;
         vapautaSolmunVaraamaMuisti(nykyinen);
         return 1;
@@ -120,12 +116,10 @@ int poistaListasta(lista *l, char* etun, char* sukun) { //return 0 if fail
 
         if (strcmp(nykyinen->duunari->etunimi, etun) == 0 &&
             strcmp(nykyinen->duunari->sukunimi, sukun) == 0) {
-                //printf("nykyinen: %s edellinen: %s\n",nykyinen->duunari->etunimi, edellinen->duunari->etunimi );
                 if (nykyinen->seur != NULL) {
                     edellinen->seur=nykyinen->seur;
                 }
                 else edellinen->seur=NULL;
-                //printf("edellinen muutoksen jälkeen: %s\n", edellinen->seur->duunari->etunimi );
                 nykyinen->seur=NULL;
                 vapautaSolmunVaraamaMuisti(nykyinen);
                 return 1;
@@ -135,6 +129,5 @@ int poistaListasta(lista *l, char* etun, char* sukun) { //return 0 if fail
         }
     }
     return 0;
-
 
 }
