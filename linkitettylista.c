@@ -106,18 +106,27 @@ int poistaListasta(lista *l, char* etun, char* sukun) { //return 0 if fail
     if (l == NULL) {
         return 0;
     }
-    solmu* seuraava = l->paa;
+    solmu* nykyinen = l->paa;
+    printf("ennen poiston iffiä\n");
+    if (strcmp(nykyinen->duunari->etunimi, etun) == 0 && //jos poistettava oli ensimmäinen solmu
+            strcmp(nykyinen->duunari->sukunimi, sukun) == 0) {
+        printf("iffissä ennen sijoitusta\n");
+        l->paa = nykyinen->seur;
+        vapautaSolmunVaraamaMuisti(nykyinen);
+        return 1;
+    }
+    else nykyinen = nykyinen->seur;
     solmu* poistettava;
-    while (seuraava != NULL) {
+    while (nykyinen != NULL) {
 
-        if (strcmp(seuraava->seur->duunari->etunimi, etun) == 0 &&
-            strcmp(seuraava->seur->duunari->sukunimi, sukun) == 0) {
-                poistettava = seuraava->seur;
-                seuraava->seur=poistettava->seur;
+        if (strcmp(nykyinen->seur->duunari->etunimi, etun) == 0 &&
+            strcmp(nykyinen->seur->duunari->sukunimi, sukun) == 0) {
+                poistettava = nykyinen->seur;
+                nykyinen->seur=poistettava->seur;
                 poistettava->seur=NULL;
                 vapautaSolmunVaraamaMuisti(poistettava);
                 return 1;
-        } else seuraava = seuraava->seur;
+        } else nykyinen = nykyinen->seur;
     }
     return 0;
 
