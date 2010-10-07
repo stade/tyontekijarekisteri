@@ -134,7 +134,7 @@ int main(void) {
           printf("2. poisto onnistui\n");
 
      }
-     /*
+     
        //Poistetaan listasta 3. työntekijä.
      if  (poistaListasta(l, "Mikko", "Alatalo") == 0) {
 
@@ -148,7 +148,7 @@ int main(void) {
           printf("3. poisto onnistui\n");
 
      }
-     */
+     
 
 
      // Vapautetaan käytetty muisti.
