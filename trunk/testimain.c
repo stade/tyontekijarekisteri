@@ -1,5 +1,5 @@
 /* 
- * File:   testimain.c
+ * Linkitettyn listan testaamista varten.
  * Author: Aleksi Aalto, Jarkko Nyman, Tatu Tahvanainen
  *
  * Created on 5. lokakuuta 2010, 17:57
@@ -63,42 +63,23 @@ int main(void) {
           printf("Listan luonti onnistui\n");
      }
     
-     
-     /*if ((s = luoSolmu(t)) == NULL) {
-         
-         printf("Ei näin2\n");
-         return (EXIT_FAILURE);
-         
-         
-     }*/
-    
      // Lisätään listaan työtekijät. Ilmoitetaan jos ei onnistunu.
 
      if ((i = lisaaListaanLoppuun(l,t)) == 0) {
 
          printf("1. listaan lisääminen epäonnistui\n");
      }
-
-     //printf("1. %d\n" , i);
-
      if ((i = lisaaListaanLoppuun(l,k)) == 0) {
 
          printf("2. listaan lisääminen epäonnistui\n");
      }
-     //printf("2. %d\n" , i);
-
      if ((i = lisaaListaanLoppuun(l,y)) == 0) {
-         printf("3. listaan lisääminen epäonnistui");
+         printf("3. listaan lisääminen epäonnistui\n");
      }
-
-
-     //printf("kolmas työntekijä:  %d\n", i);
 
      // Luodaan työntekijä etsinnän testaamista varten.
      struct tyontekija* testityontekija = malloc(sizeof(struct tyontekija));
-     //printf("ennen etsintää\n");
      testityontekija = etsiListasta(l, "Matti", "Kemppainen");
-     //printf("etsinnän jälkeen\n");
      
      if (testityontekija == NULL)  {
          printf("etsintä epäonnistui\n");
@@ -110,6 +91,7 @@ int main(void) {
      printf("NIMI: %s SUKUNIMI: %s\n", testityontekija->etunimi, testityontekija->sukunimi);
      testityontekija = etsiListasta(l, "Paavo", "Väyrynen");
      printf("NIMI: %s SUKUNIMI: %s\n", testityontekija->etunimi, testityontekija->sukunimi);
+
      //Poistetaan listasta 1. työntekijä.
      if  (poistaListasta(l, "Paavo", "Väyrynen") == 0) {
 
@@ -130,7 +112,7 @@ int main(void) {
 
 
      }
-     printf("tarkistetaan 2. poisto");
+    
      if ((testityontekija = etsiListasta(l, "Matti", "Kemppainen")) == 0) {
 
           printf("2. poisto onnistui\n");
@@ -144,7 +126,7 @@ int main(void) {
 
 
      }
-     printf("3. poiston tarkistus: \n");
+
      if ((testityontekija = etsiListasta(l, "Mikko", "Alatalo")) == 0) {
 
           printf("3. poisto onnistui\n");
