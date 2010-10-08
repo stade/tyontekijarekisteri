@@ -78,7 +78,7 @@ int main(void) {
      }
 
      // Luodaan työntekijä etsinnän testaamista varten.
-     struct tyontekija* testityontekija = malloc(sizeof(struct tyontekija));
+     struct tyontekija* testityontekija;
      testityontekija = etsiListasta(l, "Matti", "Kemppainen");
      
      if (testityontekija == NULL)  {
