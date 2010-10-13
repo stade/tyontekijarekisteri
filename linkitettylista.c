@@ -24,7 +24,7 @@ lista* luoLista() {
      lista *p;
      p = ((lista *)malloc(sizeof(lista)));
      p->paa=NULL;
-     if (p == NULL) {
+     if (p == NULL) { //Kokeillaan onko tila saatu varattua mallocilla.
 
          return NULL;
      }
