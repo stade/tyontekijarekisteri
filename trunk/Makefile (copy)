@@ -1,4 +1,4 @@
-# Makefile
+# makefile
 CC = gcc -std=c99 -pedantic -Wall -Wextra
 trekisteri: main.o linkitettylista.o
 	$(CC) -o trekisteri main.o linkitettylista.o
