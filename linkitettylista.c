@@ -103,6 +103,9 @@ int poistaListasta(lista *l, char* etun, char* sukun) { //return 0 if fail
     if (l == NULL) {
         return 0;
     }
+    if (l->paa == NULL) {
+        return 0;
+    }
     solmu* nykyinen = l->paa;
     solmu* edellinen = l->paa;
     if (strcmp(nykyinen->duunari->etunimi, etun) == 0 && //jos poistettava oli ensimmäinen solmu

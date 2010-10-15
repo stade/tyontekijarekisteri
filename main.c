@@ -25,6 +25,8 @@ tyontekija* luoDuunari(char *nimi, char *sukun, int aloitusv, int palkka);
 void luoHajautusTaulu(lista* taulu[16]);
 void lueSolmu(solmu *solmu, FILE *tiedosto);
 int sijoitaHajautusTauluun(lista* taulu[], tyontekija* t);
+void poistaDuunari(lista* taulu[], char* etunimi, char* sukunimi);
+
 int main(void) {
 
     FILE* tiedosto1;
@@ -73,6 +75,10 @@ int main(void) {
     }
 
     lueTiedostosta(tiedosto1, hajautustaulu); // <------- LUE
+
+    //poistaDuunari(hajautustaulu, "kelopaa", "paskis"); <-- poiston testausta
+    //poistaDuunari(hajautustaulu, "bul", "lul");
+
     kirjoitaTiedostoon(hajautustaulu, tiedosto2); // <---- KIRJOITA
     
     if(fclose(tiedosto1) == EOF) {
@@ -170,6 +176,16 @@ int hajauta(struct tyontekija *duunari){
     printf("Modulo taas on = %d\n", summa);
     return summa;
 }
+int hajautaNimesta(char* etun, char* sukun) {
+    int stringPituus, i = 0, summa=0;
+    stringPituus = strlen(etun);
+    for (i = 0; i < stringPituus; i++)
+        summa += etun[i];
+    for (i = 0; i < stringPituus; i++)
+        summa += sukun[i];
+    summa = summa%15;
+    return summa;
+}
 
  tyontekija* luoDuunari(char *nimi, char *sukun, int aloitusv, int palkka) {
 
@@ -204,5 +220,18 @@ void luoHajautusTaulu(lista* taulu[]) {
              printf("taulu on null\n");
      }
  }
+void poistaDuunari(lista* taulu[], char* etunimi, char* sukunimi) {
+    int indeksi;
+    tyontekija* duunari;
+    printf("poiston alku\n");
+    indeksi = hajautaNimesta(etunimi, sukunimi);
+    printf("hajautus tehty\n");
+    if (taulu[indeksi]!=NULL)
+        if (poistaListasta(taulu[indeksi], etunimi, sukunimi) == 0) {
+            printf("Poistoa ei suoritettu koska työtekijää ei löydy\n");
+        }
+    printf("poiston loppu\n");
+
+}
 
 
