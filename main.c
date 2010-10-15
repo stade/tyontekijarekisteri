@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "hajautus.h"
+//#include "hajautus.h"
 #include "linkitettylista.h"
 
 /*
@@ -23,7 +23,7 @@ int kirjoitaTiedostoon(lista* hajautustaulu[], FILE* tiedosto);
 int hajauta(struct tyontekija *duunari);
 tyontekija* luoDuunari(char *nimi, char *sukun, int aloitusv, int palkka);
 void luoHajautusTaulu(lista* taulu[16]);
-void lueSolmu(solmu *solmu, FILE *tiedosto);
+void lueSolmu(lista *l, solmu *solmu, FILE *tiedosto);
 int sijoitaHajautusTauluun(lista* taulu[], tyontekija* t);
 void poistaDuunari(lista* taulu[], char* etunimi, char* sukunimi);
 
@@ -58,7 +58,7 @@ int main(void) {
        fprintf(stderr, "Tiedostonimen lukeminen käyttäjältä epäonnistui!\n");
        return (EXIT_FAILURE);
     }
-    printf("Anna tallenntavan tiedoston nimi\n");
+    printf("Anna tallennettavan tiedoston nimi\n");
 
     if (scanf("%99s", talltiednimi) != 1) {
        fprintf(stderr, "Tiedostonimen lukeminen käyttäjältä epäonnistui!\n");
@@ -76,9 +76,9 @@ int main(void) {
 
     lueTiedostosta(tiedosto1, hajautustaulu); // <------- LUE
 
-    //poistaDuunari(hajautustaulu, "kelopaa", "paskis"); <-- poiston testausta
+    poistaDuunari(hajautustaulu, "Jesse", "Jeesmies"); //<-- poiston testausta
     //poistaDuunari(hajautustaulu, "bul", "lul");
-
+    //poistaListasta(hajautustaulu[0], "Jarkko", "Nyman");
     kirjoitaTiedostoon(hajautustaulu, tiedosto2); // <---- KIRJOITA
     
     if(fclose(tiedosto1) == EOF) {
@@ -89,6 +89,7 @@ int main(void) {
         fprintf(stderr, "Tiedoston sulkeminen epäonnistui");
         return EXIT_FAILURE;
     }
+
     
     
     return (EXIT_SUCCESS);
@@ -126,24 +127,28 @@ int lueTiedostosta(FILE* tiedosto, lista* hajautustaulu[]) {
 
 
 
+
     return EXIT_SUCCESS;
 }
 int kirjoitaTiedostoon(lista* hajautustaulu[], FILE* tiedosto) {
     //lista *temp;
     //tyontekija *temp;
     
-    for (int i=0; i<15; i++){
+    for (int i=0; i<16; i++){
         printf("i = %d\n", i);
         if (hajautustaulu[i] != NULL){
             if (hajautustaulu[i]->paa != NULL){
-                lueSolmu(hajautustaulu[i]->paa, tiedosto);
+                lueSolmu(hajautustaulu[i],hajautustaulu[i]->paa, tiedosto);
+               
             }
        }
+       free(hajautustaulu[i]);
     }
+
     
     return (EXIT_FAILURE);
 }
-void lueSolmu(solmu *solmuP, FILE *tiedosto) {
+void lueSolmu(lista* l,solmu *solmuP, FILE *tiedosto) {
 
     if (solmuP != NULL){
         printf("HALLOOO\n");
@@ -151,8 +156,8 @@ void lueSolmu(solmu *solmuP, FILE *tiedosto) {
         solmuP->duunari->sukunimi, solmuP->duunari->aloitusvuosi,
         solmuP->duunari->palkka);
 
-       lueSolmu(solmuP->seur, tiedosto);
-
+       lueSolmu(l,solmuP->seur, tiedosto);
+       //poistaListasta(l,solmuP->duunari->etunimi,solmuP->duunari->sukunimi); --> le fuu ei toimi TODO toimimaan
     }
 
 
@@ -160,15 +165,17 @@ void lueSolmu(solmu *solmuP, FILE *tiedosto) {
 
 int hajauta(struct tyontekija *duunari){
     int summa = 0;
+    int stringPituus;
     int i;
-    for (i = 0; i < 20; i++){
+    printf("NYMANIN Sällin nimi on [%s%s]\n", duunari->etunimi, duunari->sukunimi);
+    stringPituus = strlen(duunari->etunimi);
+    for (i = 0; i < stringPituus; i++){
         summa = summa + duunari->etunimi[i];
     }
-    for (i = 0; i < 30; i++){
+    stringPituus = strlen(duunari->sukunimi);
+    for (i = 0; i < stringPituus; i++){
         summa = summa + duunari->sukunimi[i];
     }
-
-
     printf("Nimen kirjaimien summa on = %d\n", summa);
 
     summa = summa%15;
@@ -179,10 +186,14 @@ int hajauta(struct tyontekija *duunari){
 int hajautaNimesta(char* etun, char* sukun) {
     int stringPituus, i = 0, summa=0;
     stringPituus = strlen(etun);
+    printf("PITUUS ON %d\n", stringPituus);
     for (i = 0; i < stringPituus; i++)
-        summa += etun[i];
+        summa = summa + etun[i];
+    stringPituus = strlen(sukun);
     for (i = 0; i < stringPituus; i++)
-        summa += sukun[i];
+        summa = summa + sukun[i];
+    printf("Sällin nimi on [%s%s]\n", etun, sukun);
+    printf("SUMMA ON %d\n", summa);
     summa = summa%15;
     return summa;
 }
@@ -220,16 +231,17 @@ void luoHajautusTaulu(lista* taulu[]) {
              printf("taulu on null\n");
      }
  }
+// TODO Ei toimi testattava.
 void poistaDuunari(lista* taulu[], char* etunimi, char* sukunimi) {
     int indeksi;
-    tyontekija* duunari;
     printf("poiston alku\n");
     indeksi = hajautaNimesta(etunimi, sukunimi);
-    printf("hajautus tehty\n");
-    if (taulu[indeksi]!=NULL)
+    printf("INDEKSI ON %d\n", indeksi);
+    if (taulu[indeksi] != NULL) {
         if (poistaListasta(taulu[indeksi], etunimi, sukunimi) == 0) {
             printf("Poistoa ei suoritettu koska työtekijää ei löydy\n");
         }
+    }
     printf("poiston loppu\n");
 
 }

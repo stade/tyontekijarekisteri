@@ -22,7 +22,7 @@ typedef struct solmu{
 
 lista* luoLista() {
      lista *p;
-     p = ((lista *)malloc(sizeof(lista)));
+     p = (malloc(sizeof(lista)));
      p->paa=NULL;
      if (p == NULL) { //Kokeillaan onko tila saatu varattua mallocilla.
 
@@ -34,7 +34,7 @@ lista* luoLista() {
 }
 solmu* luoSolmu(struct tyontekija *t) {
      solmu *s;
-     s = (solmu *)malloc(sizeof(solmu));
+     s = (malloc(sizeof(solmu)));
 
      if (s == NULL) {
 
