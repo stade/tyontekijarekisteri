@@ -76,7 +76,7 @@ int main(void) {
 
     lueTiedostosta(tiedosto1, hajautustaulu); // <------- LUE
 
-    poistaDuunari(hajautustaulu, "Jesse", "Jeesmies"); //<-- poiston testausta
+    poistaDuunari(hajautustaulu, "kelopaa", "paskis"); //<-- poiston testausta
     //poistaDuunari(hajautustaulu, "bul", "lul");
     //poistaListasta(hajautustaulu[0], "Jarkko", "Nyman");
     kirjoitaTiedostoon(hajautustaulu, tiedosto2); // <---- KIRJOITA
@@ -149,15 +149,18 @@ int kirjoitaTiedostoon(lista* hajautustaulu[], FILE* tiedosto) {
     return (EXIT_FAILURE);
 }
 void lueSolmu(lista* l,solmu *solmuP, FILE *tiedosto) {
-
-    if (solmuP != NULL){
+    solmu* edell=NULL;
+    while (solmuP != NULL){
         printf("HALLOOO\n");
         fprintf(tiedosto, "%s %s %d %d\n", solmuP->duunari->etunimi,
         solmuP->duunari->sukunimi, solmuP->duunari->aloitusvuosi,
         solmuP->duunari->palkka);
+        edell = solmuP;
+        solmuP = solmuP->seur;
+        vapautaSolmunVaraamaMuisti(edell);
+       
 
-       lueSolmu(l,solmuP->seur, tiedosto);
-       //poistaListasta(l,solmuP->duunari->etunimi,solmuP->duunari->sukunimi); --> le fuu ei toimi TODO toimimaan
+
     }
 
 
