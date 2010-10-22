@@ -82,7 +82,7 @@ tyontekija* etsiListasta(lista *l, char* etun, char* sukun) {
         if (strcmp(tempetu, etun) == 0 &&
             strcmp(tempsuku, sukun) == 0) {
 
-            printf("Etsitty on löytynyt\n");
+            //printf("Etsitty on löytynyt\n");
 
             return seuraava->duunari;
         } else seuraava = seuraava->seur;
