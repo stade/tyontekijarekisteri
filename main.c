@@ -41,7 +41,7 @@ int main(void) {
 
 
     luoHajautusTaulu(hajautustaulu);
-    if ((hajautustaulu[71]->paa) != NULL) {
+    if ((hajautustaulu[70]->paa) != NULL) {
         printf("ERROR\n");
     }
 /*
@@ -217,7 +217,7 @@ int hajautaNimesta(char* etun, char* sukun) { //TODO tutki josko olisi helppo po
 
  }
 void luoHajautusTaulu(lista* taulu[]) {
-     for (int i=0; i<72; i++) {
+     for (int i=0; i<71; i++) {
          taulu[i] = luoLista();
          if (taulu[i] == NULL)
              printf("taulu on null\n");
