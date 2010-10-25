@@ -217,7 +217,7 @@ int hajautaNimesta(char* etun, char* sukun) { //TODO tutki josko olisi helppo po
 
  }
 void luoHajautusTaulu(lista* taulu[]) {
-     for (int i=0; i<71; i++) {
+     for (int i=0; i<72; i++) {
          taulu[i] = luoLista();
          if (taulu[i] == NULL)
              printf("taulu on null\n");
@@ -384,22 +384,31 @@ void tallennusRuutu(lista* taulu[], FILE* tiedosto) {
     printf("Haluatko tallentaa rekisterin\n");
     printf("Kyllä (k) | EI (e)\n");
     //TODO scanffi kusee korjattava..
-    while (scanf("%1s", valinta) != 1 ) {
 
-        printf("fail koska %s\n", valinta);
+    // "Ikuinen" silmukka jonka suoritus päättyy oikean valinnan hetkellä.
+    while (1) {
+        
+        while (scanf("%1s", valinta) != 1 ) {
+
     
-    }
-        printf("syöte %c\n", valinta[0]);
-
-
-
-        if ((valinta[0] == 'k' )||( valinta[0] == 'K')) {
-                kirjoitaTiedostoon(taulu, tiedosto);
-                printf("Rekisteri tallenettu tiedostoon\n");
-
         }
+            printf("syöte %c\n", valinta[0]);
+            //TODO: Käytettävän muistin jättäminen tyhjentämättä kun vain tallennetaan eikä lopeteta ohjelman suoritusta!
+            if ((valinta[0] == 'k' )||( valinta[0] == 'K')) {
+                    kirjoitaTiedostoon(taulu, tiedosto);
+                    printf("Rekisteri tallennettu tiedostoon\n");
+                    break;
+            }
+            //TODO: Käytettävän muistin tyhjennys lopetusvaiheessa tarpeellinen?
+            else if ((valinta[0] == 'e' )||( valinta[0] == 'E')) {
+                    printf("Lopetettiin tallentamatta\n");
+                    break;
+            }
+            printf("syöte edelleen %c\n", valinta[0]);
 
 
+
+    }
     
    
 }
