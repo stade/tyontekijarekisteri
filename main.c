@@ -217,7 +217,7 @@ int hajautaNimesta(char* etun, char* sukun) { //TODO tutki josko olisi helppo po
 
  }
 void luoHajautusTaulu(lista* taulu[]) {
-     for (int i=0; i<72; i++) {
+     for (int i=0; i<71; i++) {
          taulu[i] = luoLista();
          if (taulu[i] == NULL)
              printf("taulu on null\n");
@@ -379,20 +379,27 @@ void etsintaRuutu(lista* taulu[]) {
 
 
 void tallennusRuutu(lista* taulu[], FILE* tiedosto) {
-    char valinta;
+    char valinta[2];
 
     printf("Haluatko tallentaa rekisterin\n");
     printf("Kyllä (k) | EI (e)\n");
     //TODO scanffi kusee korjattava..
-    while (scanf("%1c", &valinta) == 0) {
+    while (scanf("%1s", valinta) != 1 ) {
 
-        printf("fail koska %c", valinta);
+        printf("fail koska %s\n", valinta);
+    
     }
+        printf("syöte %c\n", valinta[0]);
 
-    if (valinta == ('k' || 'K')) {
-        kirjoitaTiedostoon(taulu, tiedosto);
-        printf("Rekisteri tallenntu tiedostoon");
 
-    }
+
+        if ((valinta[0] == 'k' )||( valinta[0] == 'K')) {
+                kirjoitaTiedostoon(taulu, tiedosto);
+                printf("Rekisteri tallenettu tiedostoon\n");
+
+        }
+
+
+    
    
 }
