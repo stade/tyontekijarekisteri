@@ -181,7 +181,7 @@ int hajauta(struct tyontekija *duunari){
     int summa = 0;
     int stringPituus;
     int i;
-    printf("NYMANIN Sällin nimi on [%s%s]\n", duunari->etunimi, duunari->sukunimi);
+    printf("Työntekijän nimi on [%s%s]\n", duunari->etunimi, duunari->sukunimi);
     stringPituus = strlen(duunari->etunimi);
     for (i = 0; i < stringPituus; i++){
         summa = summa + duunari->etunimi[i];
@@ -206,8 +206,8 @@ int hajautaNimesta(char* etun, char* sukun) {
     stringPituus = strlen(sukun);
     for (i = 0; i < stringPituus; i++)
         summa = summa + sukun[i];
-    printf("Sällin nimi on [%s%s]\n", etun, sukun);
-    printf("SUMMA ON %d\n", summa);
+    printf("Työntekijän nimi on [%s%s]\n", etun, sukun);
+    printf("Summa on %d\n", summa);
     summa = summa%71;
     return summa;
 }
@@ -234,6 +234,9 @@ int hajautaNimesta(char* etun, char* sukun) {
      int kk;
      if ((kk = lisaaListaanLoppuun(taulu[indeksi], t)) == 0)
          printf("Loppuun lisääminen epäonnistui\n");
+     else {
+         printf("Lisääminen onnistui\n");
+     }
      
     return 0;
 
@@ -242,10 +245,10 @@ void luoHajautusTaulu(lista* taulu[]) {
      for (int i=0; i<71; i++) {
          taulu[i] = luoLista();
          if (taulu[i] == NULL)
-             printf("Taulu on null\n");
+             printf("Hajautus taulun luonti epäonnistui\n");
      }
  }
-// TODO Ei toimi testattava.
+
 void poistaTyontekija(lista* taulu[], char* etunimi, char* sukunimi) {
     int indeksi;
     printf("Poiston alku\n");
@@ -285,7 +288,7 @@ int aloitusRuutu(lista* taulu[],FILE* tiedosto, char* tiednimi) {
 
     int valinta;
 
-    printf("Tyontekijarekisteri\n\n");
+    printf("\nTyöntekijarekisteri\n\n");
     printf("Valitse:\n\n"),
     printf("1. Lisää Työntekijä\n\n");
     printf("2. Poista työntekiä\n\n");
@@ -391,7 +394,7 @@ void etsintaRuutu(lista* taulu[]) {
         if ((t = (etsiListasta(taulu[indeksi], etunimi, sukunimi))) != NULL){
             aloitusvuosi = t->aloitusvuosi;
             palkka = t->palkka;
-            printf("Henkilön %s %s: Aloitusvuosi %d ja palkka %d\n", etunimi, sukunimi, aloitusvuosi, palkka);
+            printf("Henkilön %s %s: aloitusvuosi: %d ja palkka: %d\n", etunimi, sukunimi, aloitusvuosi, palkka);
     }
     else{
         printf("Työntekijää %s %s ei löytynyt rekisteristä\n", etunimi, sukunimi);
@@ -404,7 +407,7 @@ int tallennusRuutu(lista* taulu[], FILE* tiedosto, char* tiednimi) {
     char valinta[2];
 
     printf("Haluatko tallentaa rekisterin\n");
-    printf("Kyllä (k) | EI (e)\n");
+    printf("Kyllä (k) | Ei (e)\n");
 
 
     // "Ikuinen" silmukka jonka suoritus päättyy oikean valinnan hetkellä.
