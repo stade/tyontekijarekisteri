@@ -28,9 +28,14 @@ void lisaysRuutu(lista* taulu[]);
 void poistoRuutu(lista* taulu[]);
 void etsintaRuutu(lista* taulu[]);
 int tallennusRuutu(lista* taulu[], FILE* tiedosto, char* tiednimi);
+void printtaaApu();
 
+int main(int argc, char** argv) {
 
-int main(void) {
+    if (argc == 2) {
+        if (strcmp(argv[1], "-h") == 0)
+            printtaaApu();
+    }
 
     FILE* tiedosto1;
     char tiednimi[100];
@@ -290,9 +295,9 @@ int aloitusRuutu(lista* taulu[],FILE* tiedosto, char* tiednimi) {
 
     printf("\nTyöntekijarekisteri\n\n");
     printf("Valitse:\n\n"),
-    printf("1. Lisää Työntekijä\n\n");
-    printf("2. Poista työntekiä\n\n");
-    printf("3. Etsi Työntekijä\n\n");
+    printf("1. Lisää työntekijä\n\n");
+    printf("2. Poista työntekijä\n\n");
+    printf("3. Etsi työntekijä\n\n");
     printf("0. Tallenna & lopeta\n\n");
 
     while (scanf("%1d",&valinta) != 1);
@@ -454,4 +459,8 @@ int tallennusRuutu(lista* taulu[], FILE* tiedosto, char* tiednimi) {
 
     return 0;
    
+}
+void printtaaApu() {
+    printf("\n");
+    printf("TODO: kirjoita aputeksti\n\n");
 }
