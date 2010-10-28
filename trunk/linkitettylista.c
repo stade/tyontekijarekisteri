@@ -5,8 +5,8 @@
 typedef struct tyontekija {
      char etunimi[20];
      char sukunimi[30];
-     int palkka;
-     int aloitusvuosi;
+     char palkka[8];
+     char aloitusvuosi[5];
      
 
 }tyontekija;

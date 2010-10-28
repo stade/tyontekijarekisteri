@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "linkitettylista.h"
 
 
@@ -15,7 +16,6 @@
 int lueTiedostosta(FILE*, lista* hajautustaulu[]);
 void kirjoitaTiedostoon(lista* hajautustaulu[], FILE* tiedosto);
 int hajauta(struct tyontekija *duunari);
-tyontekija* luoTyontekija(char *nimi, char *sukun, int aloitusv, int palkka);
 void luoHajautusTaulu(lista* taulu[71]);
 void vapautaMuisti(lista* hajautustaulu[]);
 void vapautaSolmu(solmu *solmuP);
@@ -29,6 +29,7 @@ void poistoRuutu(lista* taulu[]);
 void etsintaRuutu(lista* taulu[]);
 int tallennusRuutu(lista* taulu[], FILE* tiedosto, char* tiednimi);
 void printtaaApu();
+tyontekija* luoTyontekija(char *nimi, char *sukun, char *aloitusv, char *palkka);
 
 int main(int argc, char** argv) {
 
@@ -38,7 +39,7 @@ int main(int argc, char** argv) {
     }
 
     FILE* tiedosto1;
-    char tiednimi[100];
+    char tiednimi[] = "rekisteri";
     lista* hajautustaulu[71];
     int jatkuu = 1;
 
@@ -53,12 +54,6 @@ int tarkistaOnkoJo(lista* taulu[], char* etunimi, char* sukunimi);
     etsiListasta(hajautustaulu[10], "Esa", "Keskinen");
 
     */
-    printf("Anna rekisterin sisältävän tiedoston nimi\n");
-
-    if (scanf("%99s", tiednimi) != 1) {
-       fprintf(stderr, "Tiedostonimen lukeminen käyttäjältä epäonnistui!\n");
-       return (EXIT_FAILURE);
-    }
    
 
   
@@ -99,18 +94,30 @@ int tarkistaOnkoJo(lista* taulu[], char* etunimi, char* sukunimi);
 }
 
 int lueTiedostosta(FILE* tiedosto, lista* hajautustaulu[]) {
-    printf("nyt luetaan tiedostosta\n");
+    //printf("nyt luetaan tiedostosta\n");
     //struct tyontekija taulu[20]; //taulukollinen työntekijöitä, jotta meillä pointterit niihin (ennen hajautustaulun implementaatiota)
     int j=0; //apumuuttuja taulun läpikäyntiin
     char tempnimi[20];
     char tempsukunimi[30];
-    int tempaloitusv;
-    int temppalkka;
+    char tempaloitusv[5];
+    char temppalkka[8];
+    char c;
+
+
+    // Testataan onko tiedosto tyhjä.
+    c = fgetc(tiedosto);
+    
+    if (c == EOF) {
+        return 0;
+    }
+    
+    rewind(tiedosto);
+    
     while (feof(tiedosto) == 0) {
-        printf("Luetaan riviä tiedostosta\n");
+        //printf("Luetaan riviä tiedostosta\n");
         struct tyontekija* temp;
-        fscanf(tiedosto, "%19s %29s %d%d\n", tempnimi, tempsukunimi, &tempaloitusv, &temppalkka);
-        printf("Tiedot skannattu\n");
+        fscanf(tiedosto, "%19s %29s %4s %7s\n", tempnimi, tempsukunimi, tempaloitusv, temppalkka);
+        //printf("%s\n", tempaloitusv);
         temp = luoTyontekija(tempnimi, tempsukunimi, tempaloitusv, temppalkka);
         if (temp == NULL)
             printf("Työntekijän luonti epäonnistui\n");
@@ -128,13 +135,12 @@ int lueTiedostosta(FILE* tiedosto, lista* hajautustaulu[]) {
         j++;
     }
 
-    return EXIT_SUCCESS;
+    return 1;
 }
-
 void kirjoitaTiedostoon(lista* hajautustaulu[], FILE* tiedosto) {
 
     for (int i=0; i<71; i++){
-        printf("i = %d\n", i);
+        //printf("i = %d\n", i);
         if (hajautustaulu[i] != NULL){
             if (hajautustaulu[i]->paa != NULL){
                 lueSolmu(hajautustaulu[i]->paa, tiedosto);
@@ -148,7 +154,7 @@ void kirjoitaTiedostoon(lista* hajautustaulu[], FILE* tiedosto) {
 void vapautaMuisti(lista* hajautustaulu[]) {
 
     for (int i=0; i<71; i++){
-        printf("i = %d\n", i);
+        //printf("i = %d\n", i);
         if (hajautustaulu[i] != NULL){
             if (hajautustaulu[i]->paa != NULL){
                 vapautaSolmu(hajautustaulu[i]->paa);
@@ -171,8 +177,8 @@ void vapautaSolmu(solmu *solmuP) {
 void lueSolmu(solmu *solmuP, FILE *tiedosto) {
     solmu* edell=NULL;
     while (solmuP != NULL){
-        printf("Solmu luettu\n");
-        fprintf(tiedosto, "%s %s %d %d\n", solmuP->duunari->etunimi,
+        //printf("Solmu luettu\n");
+        fprintf(tiedosto, "%s %s %s %s\n", solmuP->duunari->etunimi,
         solmuP->duunari->sukunimi, solmuP->duunari->aloitusvuosi,
         solmuP->duunari->palkka);
         edell = solmuP;
@@ -186,7 +192,7 @@ int hajauta(struct tyontekija *duunari){
     int summa = 0;
     int stringPituus;
     int i;
-    printf("Työntekijän nimi on [%s%s]\n", duunari->etunimi, duunari->sukunimi);
+    //printf("Työntekijän nimi on [%s%s]\n", duunari->etunimi, duunari->sukunimi);
     stringPituus = strlen(duunari->etunimi);
     for (i = 0; i < stringPituus; i++){
         summa = summa + duunari->etunimi[i];
@@ -195,29 +201,29 @@ int hajauta(struct tyontekija *duunari){
     for (i = 0; i < stringPituus; i++){
         summa = summa + duunari->sukunimi[i];
     }
-    printf("Nimen kirjaimien summa on = %d\n", summa);
+    //printf("Nimen kirjaimien summa on = %d\n", summa);
 
     summa = summa%71;
 
-    printf("Modulo taas on = %d\n", summa);
+    //printf("Modulo taas on = %d\n", summa);
     return summa;
 }
 int hajautaNimesta(char* etun, char* sukun) {
     int stringPituus, i = 0, summa=0;
     stringPituus = strlen(etun);
-    printf("PITUUS ON %d\n", stringPituus);
+    //printf("PITUUS ON %d\n", stringPituus);
     for (i = 0; i < stringPituus; i++)
         summa = summa + etun[i];
     stringPituus = strlen(sukun);
     for (i = 0; i < stringPituus; i++)
         summa = summa + sukun[i];
-    printf("Työntekijän nimi on [%s%s]\n", etun, sukun);
-    printf("Summa on %d\n", summa);
+    //printf("Työntekijän nimi on [%s%s]\n", etun, sukun);
+    //printf("Summa on %d\n", summa);
     summa = summa%71;
     return summa;
 }
 
- tyontekija* luoTyontekija(char *nimi, char *sukun, int aloitusv, int palkka) {
+ tyontekija* luoTyontekija(char *nimi, char *sukun, char *aloitusv, char* palkka) {
 
     tyontekija *t;
 
@@ -225,11 +231,12 @@ int hajautaNimesta(char* etun, char* sukun) {
         fprintf(stderr, "Muistin varaaminen epäonnistui");
         return NULL;
     }
-
+    printf("VUOSI tyontekijan luonnissa: %s\n",aloitusv);
     strcpy(t->etunimi, nimi);
     strcpy(t->sukunimi, sukun);
-    t->aloitusvuosi = aloitusv;
-    t->palkka = palkka;
+    strcpy(t->aloitusvuosi, aloitusv);
+    printf("VUOSI TYÖNTEKIJÄ LUOTU: %s\n",t->aloitusvuosi);
+    strcpy(t->palkka, palkka);
 
     return t;
 
@@ -256,9 +263,9 @@ void luoHajautusTaulu(lista* taulu[]) {
 
 void poistaTyontekija(lista* taulu[], char* etunimi, char* sukunimi) {
     int indeksi;
-    printf("Poiston alku\n");
+    //printf("Poiston alku\n");
     indeksi = hajautaNimesta(etunimi, sukunimi);
-    printf("Indeksi on %d\n", indeksi);
+    //printf("Indeksi on %d\n", indeksi);
     if (taulu[indeksi] != NULL) {
         if (poistaListasta(taulu[indeksi], etunimi, sukunimi) == 0) {
             printf("Poistoa ei suoritettu koska työntekijää ei löydy\n");
@@ -291,7 +298,7 @@ int tarkistaOnkoJo(lista* taulu[], char* etunimi, char* sukunimi) {
 
 int aloitusRuutu(lista* taulu[],FILE* tiedosto, char* tiednimi) {
 
-    int valinta;
+    char valinta[2];
 
     printf("\nTyöntekijarekisteri\n\n");
     printf("Valitse:\n\n"),
@@ -300,21 +307,21 @@ int aloitusRuutu(lista* taulu[],FILE* tiedosto, char* tiednimi) {
     printf("3. Etsi työntekijä\n\n");
     printf("0. Tallenna & lopeta\n\n");
 
-    while (scanf("%1d",&valinta) != 1);
+    while (scanf("%1s",valinta) != 1);
 
-    if (valinta == 1) {
+    if (valinta[0] == '1') {
 
         lisaysRuutu(taulu);
     }
-    if (valinta == 2) {
+    if (valinta[0] == '2') {
 
         poistoRuutu(taulu);
     }
-    if (valinta == 3) {
+    if (valinta[0] == '3') {
 
         etsintaRuutu(taulu);
     }
-    if (valinta == 0) {
+    if (valinta[0] == '0') {
 
         // Jos suorituksessa tapahtuu virhe
         if ((tallennusRuutu(taulu, tiedosto, tiednimi)) == 2) {
@@ -334,30 +341,55 @@ void lisaysRuutu(lista* taulu[]) {
 
     char etunimi[20];
     char sukunimi[30];
-    int aloitusvuosi;
-    int palkka;
+    char aloitusvuosi[5];
+    char palkka[8];
     tyontekija* t;
+    int boolean;
 
 
-    printf("Anna lisättävän työntekijän etunimi esim. Matti:\n");
+
+    printf("Anna lisättävän työntekijän etunimi esim. Matti (max 19 merkkiä):\n");
     while (scanf("%19s",etunimi) == 0);
 
-    printf("Anna lisättävän työntekijän sukunimi esim. Lehtinen:\n");
+    printf("Anna lisättävän työntekijän sukunimi esim. Lehtinen (max 29 merkkiä) :\n");
     while (scanf("%29s",sukunimi) == 0);
 
     printf("Anna lisättävän työntekijän aloitusvuosi esim. 1989:\n");
-    while (scanf("%4d",&aloitusvuosi) != 1);
 
-    printf("Anna lisättävän työntekijän palkka esim. 2000:\n");
-    while (scanf("%d",&palkka) != 1);
+    do {
+        boolean = 1;
+        while (scanf("%4s",aloitusvuosi) == 0);
+            for(int i = 0; i < 4; i++) {
+                if (isdigit(aloitusvuosi[i]) == 0) {
+                boolean = 0;
+                }
+            }
+    }
+    while(boolean == 0);
+    printf("VUOSI: %s\n",aloitusvuosi);
+
+    printf("Anna lisättävän työntekijän palkka esim. 1000 (max 7 merkkiä):\n");
+     do {
+        boolean = 1;
+        while (scanf("%7s",palkka) == 0);
+            for(unsigned int i = 0; i < strlen(palkka)-1; i++) {
+                if (isdigit(palkka[i]) == 0) {
+                boolean = 0;
+                }
+            }
+    }
+    while(boolean == 0);
+    printf("PALKKA: %s\n",palkka);
 
     if (tarkistaOnkoJo(taulu, etunimi, sukunimi) != 0) {
 
-        t = luoTyontekija(etunimi, sukunimi,aloitusvuosi,palkka);
+        t = luoTyontekija(etunimi, sukunimi, aloitusvuosi, palkka);
+        printf("työntekijä vuosi: %s\n",t->aloitusvuosi);
+        printf("työntekijä palkka: %s\n",t->palkka);
         sijoitaHajautusTauluun(taulu, t);
     }
     else {
-        printf("Samanniminen työntekijä jo rekisterissä.\n");
+        printf("Samanniminen työntekijä on jo rekisterissä.\n");
         printf("Lisäystä ei suoritettu!\n");
     }
 
@@ -385,8 +417,8 @@ void poistoRuutu(lista* taulu[]) {
 void etsintaRuutu(lista* taulu[]) {
     char etunimi[20];
     char sukunimi[30];
-    int aloitusvuosi;
-    int palkka;
+    char *aloitusvuosi;
+    char *palkka;
     tyontekija* t;
 
     printf("Anna etsittävän työntekijän etunimi esim. Matti\n");
@@ -399,7 +431,7 @@ void etsintaRuutu(lista* taulu[]) {
         if ((t = (etsiListasta(taulu[indeksi], etunimi, sukunimi))) != NULL){
             aloitusvuosi = t->aloitusvuosi;
             palkka = t->palkka;
-            printf("Henkilön %s %s: aloitusvuosi: %d ja palkka: %d\n", etunimi, sukunimi, aloitusvuosi, palkka);
+            printf("Henkilön %s %s aloitusvuosi on %s ja palkka %s\n", etunimi, sukunimi, aloitusvuosi, palkka);
     }
     else{
         printf("Työntekijää %s %s ei löytynyt rekisteristä\n", etunimi, sukunimi);
@@ -418,30 +450,28 @@ int tallennusRuutu(lista* taulu[], FILE* tiedosto, char* tiednimi) {
     // "Ikuinen" silmukka jonka suoritus päättyy oikean valinnan hetkellä.
     while (1) {
         
-        while (scanf("%1s", valinta) != 1 ) {
+        while ((scanf("%1s", valinta)) != 1 ) {
 
     
         }
-            printf("syöte %c\n", valinta[0]);
+            //printf("syöte %c\n", valinta[0]);
    
             if ((valinta[0] == 'k' )||( valinta[0] == 'K')) {
                 // Avataan nyt kirjoittamista varten
                 if ((tiedosto = fopen(tiednimi, "w" )) == NULL){
-                    fprintf(stderr, "Tiedoston avaaminen epäonnistu\n");
+                    fprintf(stderr, "Tiedoston avaaminen epäonnistui\n");
                     return 2;
                 }
 
                 kirjoitaTiedostoon(taulu, tiedosto);
                 printf("Rekisteri tallennettu tiedostoon\n");
 
-                printf("jee");
-                
+
                 if(fclose(tiedosto) == EOF) {
                     fprintf(stderr, "Tiedoston sulkeminen epäonnistui");
                     return 2;
                 }
 
-                printf("jee");
 
                 break;
             }
@@ -451,7 +481,7 @@ int tallennusRuutu(lista* taulu[], FILE* tiedosto, char* tiednimi) {
                 printf("Lopetettiin tallentamatta\n");
                 break;
             }
-            printf("syöte edelleen %c\n", valinta[0]);
+            //printf("syöte edelleen %c\n", valinta[0]);
 
 
 
@@ -462,5 +492,20 @@ int tallennusRuutu(lista* taulu[], FILE* tiedosto, char* tiednimi) {
 }
 void printtaaApu() {
     printf("\n");
-    printf("TODO: kirjoita aputeksti\n\n");
+    printf("Ohjelma käyttää tiedostoa Rekisteri apunaan ja vaatii\n");
+    printf("tämän tiedoston samaan hakemistoon ohjelman kanssa.\n");
+    printf("Jos tiedosto jostain syystä puuttuu, luo uusi tyhjä tiedosto\n");
+    printf("\"Rekisteri\" tämän ohjelman hakemistoon.\n\n");
+    printf("Työntekijärekisteri tarjoaa kolme toimintoa.\n\n");
+    printf("Ohjelma kysyy ensiksi rekisterin sisältävän tiedoston\n");
+    printf("tiedostopolkua. Jos tiedosto on samassa kansiossa kuin ohjelma,\n");
+    printf("riittää että annat tiedoston nimen. Muuten pitää antaa tiedostopolku.\n");
+    printf("Valinnalla 1 lisätään työntekijä antamalla työntekijän tiedot.\n");
+    printf("(Etunimi,sukunimi,aloitusvuosi ja palkka)\n");
+    printf("Valinnalla 2 poistetaan työntekijä. Poisto toimii antamalla poistettavan\n");
+    printf("työntekijän etunimi ja sukunimi.\n");
+    printf("Valinnalla 3 etsitään työntekijä rekisteristä ja ilmoitetaan etsityn\n");
+    printf("työntekijän aloitusvuosi ja palkka.\n");
+    printf("Valinnalla 0 lopetetaan ohjelman suoritus ja voidaan halutessa tallentaa\n");
+    printf("rekisterin mahdolliset muutokset\n\n");
 }
