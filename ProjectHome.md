@@ -1,0 +1,1 @@
+Työntekijärekisteri toteutetaan osana Helsingin yliopiston Tietojenkäsittelytieteen laitoksen c-ohjelmointi kurssia.
